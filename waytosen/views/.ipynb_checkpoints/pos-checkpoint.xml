@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/waytosen/static/src/js/pos.js"></script>
+        </xpath>
+    </template>
+    <template id="web_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/waytosen/static/src/js/select.js"></script>
+        </xpath>
+    </template>
+    <record id="pos_order_inherit_form" model="ir.ui.view">
+        <field name="name">pos_order.form.view</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="input_field_value" />
+            </field>
+        </field>
+    </record>
+</odoo>
