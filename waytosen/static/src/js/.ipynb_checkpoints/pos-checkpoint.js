@@ -148,7 +148,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     console.log("SUCCESS ", data);
 
                     var token = data['access_token']
-                    
+
                     if (order.get_orderlines().length === 0) {
                         self.gui.show_popup('error', {
                             'title': _t('Empty Order'),
@@ -158,7 +158,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     }
 
                     else {
-                        var payment_method = self.get_payment_methode_code()
+                        var payment_method = self.get_payment_methode_code(order.get_paymentlines()[0].name)
                         var payload_to_send = {
                             "sender_id": order.get_phone_paid(),
                             "amount": order.get_total_with_tax(),
@@ -208,6 +208,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
 
         get_payment_methode_code: function (payement_name) {
+            console.log(payement_name);
             if (payement_name.toLowerCase().includes("wave", 0)) return 12;
             if (payement_name.toLowerCase().includes("om", 0)) return 202;
             if (payement_name.toLowerCase().includes("wari", 0)) return 45;
