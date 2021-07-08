@@ -148,8 +148,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     console.log("SUCCESS ", data);
 
                     var token = data['access_token']
-                    var order = this.pos.get_order();
-
+                    
                     if (order.get_orderlines().length === 0) {
                         self.gui.show_popup('error', {
                             'title': _t('Empty Order'),
@@ -243,6 +242,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
         set_phone_paid_value: function (phone_paid_value) {
             this.phone_paid_value = phone_paid_value;
         },
+
         get_phone_paid_value: function () {
             return this.phone_paid_value;
         },
