@@ -203,7 +203,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
     get_select_data: function () {
         var self = this;
         self.gui.show_popup('popup_phone_paid', {
-            title: _t('Popup phone paid'),
+            title: _t('numéro de téléphone du client'),
             confirm: function () {
                 var order = self.pos.get_order();
                 order.set_phone_paid_value(document.getElementsByName("popup_phone_paid")[0].value)

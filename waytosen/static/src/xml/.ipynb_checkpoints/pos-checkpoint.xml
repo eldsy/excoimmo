@@ -3,7 +3,7 @@
     <t t-extend="PaymentScreenWidget" t-as="CustomPaymentScreenWidget">
         <t t-jquery="div[class='payment-buttons']" t-operation="append">
             <button t-attf-class="button popup_phone_paids" style="width:320px;">
-                <span>Popup phone paid</span>
+                <span>Numéro du client</span>
             </button>
         </t>
     </t>
