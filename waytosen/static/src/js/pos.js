@@ -146,7 +146,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
                 data: JSON.stringify(data),
                 success: function (data) {
                     console.log("SUCCESS ", data);
-                    /*
+
                     var token = data['access_token']
                     var order = this.pos.get_order();
 
@@ -159,12 +159,12 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     }
 
                     else {
-
+                        var payment_method = self.get_payment_methode_code()
                         var payload_to_send = {
                             "sender_id": order.get_phone_paid(),
                             "amount": order.get_total_with_tax(),
                             "account_id": 1,
-                            "payment_method": order.get_paymentlines()[0].cid
+                            "payment_method": payment_method
                         }
 
                         console.log(payload_to_send)
@@ -190,7 +190,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
                                 return false;
                             }
                         })
-                    } */
+                    }
                 },
                 error: function (data) {
                     console.log("ERROR ", data);
@@ -201,50 +201,59 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     return false;
                 }
             })
-            
 
-            
+
+
             this._super();
         },
 
-    get_select_data: function () {
-        var self = this;
-        self.gui.show_popup('popup_phone_paid', {
-            title: _t('numéro de téléphone du client'),
-            confirm: function () {
-                var order = self.pos.get_order();
-                order.set_phone_paid_value(document.getElementsByName("popup_phone_paid")[0].value)
-            },
-            cancel: function () { },
-        });
-    },
-    get_input_value: function () {
-        return document.getElementsByName("popup_phone_paid")[0].value;
-    },
+
+        get_payment_methode_code: function (payement_name) {
+            if (payement_name.toLowerCase().includes("wave", 0)) return 12;
+            if (payement_name.toLowerCase().includes("om", 0)) return 202;
+            if (payement_name.toLowerCase().includes("wari", 0)) return 45;
+            else 0
+        },
+
+
+        get_select_data: function () {
+            var self = this;
+            self.gui.show_popup('popup_phone_paid', {
+                title: _t('numéro de téléphone du client'),
+                confirm: function () {
+                    var order = self.pos.get_order();
+                    order.set_phone_paid_value(document.getElementsByName("popup_phone_paid")[0].value)
+                },
+                cancel: function () { },
+            });
+        },
+        get_input_value: function () {
+            return document.getElementsByName("popup_phone_paid")[0].value;
+        },
     });
 
 
-var _super_order = models.Order.prototype;
-models.Order = models.Order.extend({
-    initialize: function (attr, options) {
-        this.phone_paid_value = false;
-        _super_order.initialize.apply(this, arguments);
-    },
+    var _super_order = models.Order.prototype;
+    models.Order = models.Order.extend({
+        initialize: function (attr, options) {
+            this.phone_paid_value = false;
+            _super_order.initialize.apply(this, arguments);
+        },
 
-    set_phone_paid_value: function (phone_paid_value) {
-        this.phone_paid_value = phone_paid_value;
-    },
-    get_phone_paid_value: function () {
-        return this.phone_paid_value;
-    },
+        set_phone_paid_value: function (phone_paid_value) {
+            this.phone_paid_value = phone_paid_value;
+        },
+        get_phone_paid_value: function () {
+            return this.phone_paid_value;
+        },
 
-    export_as_JSON: function () {
-        var json = _super_order.export_as_JSON.apply(this, arguments);
-        var order = this.pos.get('selectedOrder');
-        if (order) {
-            json.field_input_value = this.phone_paid_value;
-        }
-        return json
-    },
-});
+        export_as_JSON: function () {
+            var json = _super_order.export_as_JSON.apply(this, arguments);
+            var order = this.pos.get('selectedOrder');
+            if (order) {
+                json.field_input_value = this.phone_paid_value;
+            }
+            return json
+        },
+    });
 });
