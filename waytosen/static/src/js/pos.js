@@ -201,8 +201,6 @@ odoo.define('popup_phone_paid.pos', function (require) {
                 }
             })
 
-
-
             this._super();
         },
 
@@ -244,7 +242,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
             this.phone_paid_value = phone_paid_value;
         },
 
-        get_phone_paid_value: function () {
+        get_phone_paid: function () {
             return this.phone_paid_value;
         },
 
