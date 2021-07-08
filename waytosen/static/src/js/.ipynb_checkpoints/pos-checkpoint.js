@@ -114,24 +114,27 @@ odoo.define('popup_phone_paid.pos', function (require) {
             var self = this;
             this._super();
 
-            //this.$('.next').addClass('.validatePayment');
-            //this.$('.validatePayment').removeClass('.next');
+            this.$('.next').addClass('.validatePayment');
+            this.$('.validatePayment').removeClass('.next');
 
+            this._super();
 
-            //this.$('.validatePayment').click(function () {
-            //    self.pay_online();
-            //    console.log('click');
-            //});
+            this.$('.validatePayment').click(function () {
+                self.pay_online();
+                self.validate_order();
+            });
 
             this.$('.popup_phone_paids').click(function () {
                 self.get_select_data();
             });
         },
 
-        pay_online: function () {
-            console.log('pay_online');
+        order_is_valid: function (force_validation) {
+            console.log('order_is_valid');
             var self = this;
+            var order = this.pos.get_order();
 
+            console.log(order);
             var data = {
                 "email": "super@test.mail",
                 "password": "super"
@@ -143,8 +146,6 @@ odoo.define('popup_phone_paid.pos', function (require) {
                 data: JSON.stringify(data),
                 success: function (data) {
                     console.log("SUCCESS ", data);
-                    self.validate_order();
-
                     /*
                     var token = data['access_token']
                     var order = this.pos.get_order();
@@ -200,8 +201,11 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     return false;
                 }
             })
+            
 
-},
+            
+            this._super();
+        },
 
     get_select_data: function () {
         var self = this;
