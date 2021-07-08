@@ -177,7 +177,11 @@ odoo.define('popup_phone_paid.pos', function (require) {
                                 type: 'post',
                                 url: 'http://13.79.232.153:8081/api/transaction/dispatch',
                                 data: JSON.stringify(payload_to_send),
-                                headers: {"Authorization": token},
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Content-Type': 'application/json',
+                                    "Authorization": token
+                                },
                                 success: function (data) {
                                     console.log("SUCCESS ", data);
                                     return true
