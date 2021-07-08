@@ -149,6 +149,8 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
                     var token = data['access_token']
 
+                    console.log("TOKEN ", token);
+
                     if (order.get_orderlines().length === 0) {
                         self.gui.show_popup('error', {
                             'title': _t('Empty Order'),
@@ -159,36 +161,40 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
                     else {
                         var payment_method = self.get_payment_methode_code(order.get_paymentlines()[0].name)
-                        var payload_to_send = {
-                            "sender_id": order.get_phone_paid(),
-                            "amount": order.get_total_with_tax(),
-                            "account_id": 1,
-                            "payment_method": payment_method
-                        }
 
-                        console.log(payload_to_send)
-
-                        $.ajax({
-                            type: 'post',
-                            url: 'http://13.79.232.153:8081/api/transaction/dispatch',
-                            contentType: 'application/json',
-                            data: JSON.stringify(payload_to_send),
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader("Authorization", token);
-                            },
-
-                            success: function (data) {
-                                console.log("SUCCESS ", data);
-                            },
-                            error: function (data) {
-                                console.log("ERROR ", data);
-                                self.gui.show_popup('error', {
-                                    'title': _t('Payement'),
-                                    'body': _t('Le payement a échoué'),
-                                });
-                                return false;
+                        if (payment_method == 0) this._super();
+                        else {
+                            var payload_to_send = {
+                                "sender_id": order.get_phone_paid(),
+                                "amount": order.get_total_with_tax(),
+                                "account_id": 1,
+                                "payment_method": payment_method
                             }
-                        })
+
+                            console.log(payload_to_send)
+
+                            $.ajax({
+                                type: 'post',
+                                url: 'http://13.79.232.153:8081/api/transaction/dispatch',
+                                data: JSON.stringify(payload_to_send),
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("Authorization", 'Bearer ' +token);
+                                },
+
+                                success: function (data) {
+                                    console.log("SUCCESS ", data);
+                                    return true
+                                },
+                                error: function (data) {
+                                    console.log("ERROR ", data);
+                                    self.gui.show_popup('error', {
+                                        'title': _t('Payement'),
+                                        'body': _t('Le payement a échoué'),
+                                    });
+                                    return false;
+                                }
+                            })
+                        }
                     }
                 },
                 error: function (data) {
@@ -200,8 +206,6 @@ odoo.define('popup_phone_paid.pos', function (require) {
                     return false;
                 }
             })
-
-            this._super();
         },
 
 
