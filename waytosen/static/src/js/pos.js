@@ -114,13 +114,13 @@ odoo.define('popup_phone_paid.pos', function (require) {
             var self = this;
 
             this.$('.next').addClass('.validatePayment');
-            this.$('.validatePayment').removeClass('.next');
+            //this.$('.validatePayment').removeClass('.next');
 
             this._super();
 
             this.$('.validatePayment').click(function () {
                 self.pay_online();
-                self.validate_order();
+                console.log('click');
             });
 
             this.$('.popup_phone_paids').click(function () {
@@ -129,6 +129,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
         },
 
         pay_online: function () {
+            console.log('pay_online');
             var self = this;
 
             var data = {
@@ -142,6 +143,8 @@ odoo.define('popup_phone_paid.pos', function (require) {
                 data: JSON.stringify(data),
                 success: function (data) {
                     console.log("SUCCESS ", data);
+                    self.validate_order();
+
                     /*
                     var token = data['access_token']
                     var order = this.pos.get_order();
