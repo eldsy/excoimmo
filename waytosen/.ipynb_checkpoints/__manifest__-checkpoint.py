@@ -8,7 +8,7 @@
     'website': 'www.waytosen.com',
     'author': 'Fatima',
     'images': [],
-    'depends': ['base', 'pos_restaurant', 'point_of_sale'],
+    'depends': ['base', 'point_of_sale', 'pos_sale'],
     'data': [
         'views/pos.xml',
     ],
