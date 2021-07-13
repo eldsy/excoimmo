@@ -136,8 +136,8 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
             console.log(order);
             var data = {
-                "email": "super@test.mail",
-                "password": "super"
+                "email": "cahier@test.mail",
+                "password": "sossen123"
             }
             $.ajax({
                 type: 'post',
