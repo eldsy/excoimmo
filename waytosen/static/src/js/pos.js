@@ -136,7 +136,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
             console.log(order);
             var data = {
-                "email": "cahier@test.mail",
+                "email": "cashier@test.mail",
                 "password": "sossen123"
             }
             $.ajax({
@@ -212,10 +212,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
         get_payment_methode_code: function (payement_name) {
             console.log(payement_name);
-            if (payement_name.toLowerCase().includes("wave", 0)) return 12;
-            if (payement_name.toLowerCase().includes("om", 0)) return 202;
-            if (payement_name.toLowerCase().includes("wari", 0)) return 45;
-            else 0
+            return Number(payement_name.split('(')[1].split(')')[0])
         },
 
 
