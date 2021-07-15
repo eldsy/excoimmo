@@ -137,7 +137,7 @@ odoo.define('popup_phone_paid.pos', function (require) {
             console.log(order);
             var data = {
                 "email": "cashier@test.mail",
-                "password": "sossen123"
+                "password": "sosen123"
             }
             $.ajax({
                 type: 'post',
@@ -161,14 +161,16 @@ odoo.define('popup_phone_paid.pos', function (require) {
 
                     else {
                         var payment_method = self.get_payment_methode_code(order.get_paymentlines()[0].name)
-
+                        var date_sent = self.get_current_date_time()
+                        
                         if (payment_method == 0) this._super();
                         else {
                             var payload_to_send = {
                                 "sender_id": order.get_phone_paid(),
                                 "amount": order.get_total_with_tax(),
-                                "account_id": 1,
-                                "payment_method": payment_method
+                                "checkout_id": 1,
+                                "payment_method": payment_method,
+                                "date_sent": date_sent
                             }
 
                             console.log(payload_to_send)
@@ -209,10 +211,27 @@ odoo.define('popup_phone_paid.pos', function (require) {
         },
 
 
+
         get_payment_methode_code: function (payement_name) {
             console.log(payement_name);
             return Number(payement_name.split('(')[1].split(')')[0])
         },
+
+
+
+        get_current_date_time: function () {
+            var date = new Date();
+            var dateStr =
+                date.getFullYear() + "-" +
+                ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+                ("00" + date.getDate()).slice(-2) + " " +
+                ("00" + date.getHours()).slice(-2) + ":" +
+                ("00" + date.getMinutes()).slice(-2) + ":" +
+                ("00" + date.getSeconds()).slice(-2);
+            console.log(dateStr);
+            return dateStr;
+        },
+
 
 
         get_select_data: function () {
