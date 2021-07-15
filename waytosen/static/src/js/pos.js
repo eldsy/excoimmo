@@ -180,7 +180,6 @@ odoo.define('popup_phone_paid.pos', function (require) {
                                 data: JSON.stringify(payload_to_send),
                                 headers: {
                                     'Authorization': 'Bearer '+token,
-                                    'Access-Control-Allow-Origin': '*'
                                 },
                                 success: function (data) {
                                     console.log("SUCCESS ", data);
